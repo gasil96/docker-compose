@@ -1,4 +1,4 @@
-version: '3.0'
+version: '3.3'
 services:
   mongo:
     container_name: "mongo_db"
@@ -12,7 +12,6 @@ services:
       - /home/renatogroffe/Desenvolvimento/Docker/Volumes/MongoDB:/data/db
     networks:
       - mongo-compose-network
-
   orcldb:
     container_name: "oracle_db"
     image: store/oracle/database-enterprise:12.2.0.1-slim
@@ -21,22 +20,21 @@ services:
       - 5500:5500
     environment:
         DB_SID: "xe"
-  
   mysqlsrv:
     container_name: "mysql_db"
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "mysql"
-      MYSQL_DATABASE: mydb
+      MYSQL_DATABASE: 'db'   
+      MYSQL_USER: 'mysql'
+      MYSQL_PASSWORD: 'password'      
+      MYSQL_ROOT_PASSWORD: 'mysql'
     ports:
       - "3306:3306"
     volumes:
       - ./mysql-init-scripts:/docker-entrypoint-initdb.d
     networks:
       - mysql-compose-network
-  
   postgressrv:
     container_name: "postgres_db"
     image: "postgres"
@@ -49,7 +47,6 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=root
-  
   rabbitmq:
     container_name: "rabbitmq"
     image: rabbitmq:3-management
@@ -60,7 +57,6 @@ services:
      - "5672:5672"
     networks:
       - default 
-  
   keycloak:
     container_name: "keycloak"
     image: jboss/keycloak
