@@ -8,8 +8,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
     ports:
       - "27017:27017"
-    networks:
-      - mongo-compose-network
   orcldb:
     container_name: "oracle_db"
     image: store/oracle/database-enterprise:12.2.0.1-slim
@@ -21,16 +19,10 @@ services:
   mysqlsrv:
     container_name: "mysql_db"
     image: mysql:5.7
-    restart: always
     environment:
-      MYSQL_DATABASE: 'db'   
-      MYSQL_USER: 'mysql'
-      MYSQL_PASSWORD: 'mysql'      
-      MYSQL_ROOT_PASSWORD: 'mysql'
+      MYSQL_ROOT_PASSWORD: "root"
     ports:
       - "3306:3306"
-    networks:
-      - mysql-compose-network
   postgressrv:
     container_name: "postgres_db"
     image: "postgres"
@@ -61,8 +53,3 @@ services:
         - KEYCLOAK_PASSWORD=admin
     networks:
         - default
-networks: 
-  mysql-compose-network:
-    driver: bridge
-  mongo-compose-network:
-      driver: bridge
