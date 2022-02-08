@@ -8,8 +8,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
     ports:
       - "27017:27017"
-    volumes:
-      - /home/renatogroffe/Desenvolvimento/Docker/Volumes/MongoDB:/data/db
     networks:
       - mongo-compose-network
   orcldb:
@@ -27,12 +25,10 @@ services:
     environment:
       MYSQL_DATABASE: 'db'   
       MYSQL_USER: 'mysql'
-      MYSQL_PASSWORD: 'password'      
+      MYSQL_PASSWORD: 'mysql'      
       MYSQL_ROOT_PASSWORD: 'mysql'
     ports:
       - "3306:3306"
-    volumes:
-      - ./mysql-init-scripts:/docker-entrypoint-initdb.d
     networks:
       - mysql-compose-network
   postgressrv:
@@ -41,8 +37,6 @@ services:
     restart: always
     ports:
       - "5432:5432"
-    volumes:
-      - ./postgres-init-scripts:/docker-entrypoint-initdb.d
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
@@ -60,10 +54,6 @@ services:
   keycloak:
     container_name: "keycloak"
     image: jboss/keycloak
-    volumes:
-        - ./drive_jdbc:/opt/jboss/keycloak/modules/system/layers/base/com/oracle/jdbc/main/driver    
-    depends_on:
-        - oracle 
     ports:
         - 9000:8080
     environment:
